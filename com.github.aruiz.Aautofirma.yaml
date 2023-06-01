@@ -21,18 +21,31 @@ modules:
       buildsystem: simple
       build-commands:
         - /usr/lib/sdk/openjdk11/install.sh
+
+    - name: dnie
+      buildsystem: simple
+      build-commands:
+        - sh install-dnie.sh
+      sources:
+        - type: file
+          filename: libpkcs11-dnie_1.6.8_amd64.deb
+          url: https://www.dnielectronico.es/descargas/distribuciones_linux/libpkcs11-dnie_1.6.8_amd64.deb
+          sha256: 851d7438b2c0ca601e492e69b2bbd279c0ea291aa8881d932b8e0a56f6261b09
+          size: 1440
+        
+        - type: file
+          path: install-dnie.sh
+        
     - name: autofirma
       buildsystem: simple
       build-commands:
-        - ./install.sh
+        - ./install-autofirma.sh
       sources:
         - type: archive
-          only-arches:
-            - x86_64
           filename: AutoFirma_Linux_Debian.zip
           url: https://estaticos.redsara.es/comunes/autofirma/currentversion/AutoFirma_Linux_Debian.zip
           sha256: 447151616db602351071b51e8a7ef01aab6801742bc29ac200208ab913c14444
           size: 50644
 
         - type: file
-          path: install.sh
+          path: install-autofirma.sh
