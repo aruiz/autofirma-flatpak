@@ -1,0 +1,38 @@
+app-id: com.github.aruiz.Autofirma
+runtime: org.freedesktop.Platform
+sdk: org.freedesktop.Sdk
+runtime-version: "22.08"
+sdk-extensions:
+    - org.freedesktop.Sdk.Extension.openjdk11
+command: /app/usr/bin/autofirma
+finish-args:
+    - --env=PATH=/app/jre/bin:/app/bin:/usr/bin
+    - --env=JAVA_HOME=/app/jre
+    - --env=JAVA=/app/jre/bin/java
+    - --share=ipc
+    - --socket=x11
+    - --socket=pulseaudio
+    - --share=network
+    - --device=dri
+    - --filesystem=home
+    - --persist=.java
+modules:
+    - name: openjdk
+      buildsystem: simple
+      build-commands:
+        - /usr/lib/sdk/openjdk11/install.sh
+    - name: autofirma
+      buildsystem: simple
+      build-commands:
+        - ./install.sh
+      sources:
+        - type: archive
+          only-arches:
+            - x86_64
+          filename: AutoFirma_Linux_Debian.zip
+          url: https://estaticos.redsara.es/comunes/autofirma/currentversion/AutoFirma_Linux_Debian.zip
+          sha256: 447151616db602351071b51e8a7ef01aab6801742bc29ac200208ab913c14444
+          size: 50644
+
+        - type: file
+          path: install.sh
