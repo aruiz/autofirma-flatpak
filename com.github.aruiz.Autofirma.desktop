@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Name=AutoFirma
+MimeType=x-scheme-handler/afirma;
+Exec=/app/usr/bin/autofirma %u
+Icon=com.github.aruiz.Autofirma
+Type=Application
+Terminal=false
+X-Flatpak=com.github.aruiz.Autofirma

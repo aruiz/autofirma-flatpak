@@ -49,3 +49,7 @@ modules:
 
         - type: file
           path: install-autofirma.sh
+        - type: file
+          path: com.github.aruiz.Autofirma.desktop
+        - type: file
+          path: AutoFirma.svg
