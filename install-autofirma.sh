@@ -3,7 +3,7 @@ set -e
 shopt -s failglob
 
 mkdir deb-package
-ar p  AutoFirma_1*.deb data.tar.zst | tar xvf - --zstd -C deb-package
+ar p  AutoFirma_1*.deb data.tar.gz | tar zxvf - -C deb-package
 sed -i "s/ \/usr\// \/app\/usr\//" deb-package/usr/bin/autofirma
 
 install -Dm755 deb-package/usr/bin/autofirma                                /app/usr/bin/autofirma

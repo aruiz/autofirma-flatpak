@@ -44,8 +44,8 @@ modules:
         - type: archive
           filename: AutoFirma_Linux_Debian.zip
           url: https://estaticos.redsara.es/comunes/autofirma/currentversion/AutoFirma_Linux_Debian.zip
-          sha256: 447151616db602351071b51e8a7ef01aab6801742bc29ac200208ab913c14444
-          size: 50644
+          sha256: 5b0660a9e1fbcba6aa81c8142429084e72f9d2b306c6bc1c73b7c860e6c81ab9
+          size: 51564
 
         - type: file
           path: install-autofirma.sh
