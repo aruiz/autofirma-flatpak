@@ -1,0 +1,18 @@
+diff --git a/afirma-lib-itext-android/pom.xml b/afirma-lib-itext-android/pom.xml
+index 44c8121..4d00a8b 100644
+--- a/afirma-lib-itext-android/pom.xml
++++ b/afirma-lib-itext-android/pom.xml
+@@ -83,10 +83,10 @@
+ 			<plugin>
+ 				<groupId>org.apache.maven.plugins</groupId>
+ 				<artifactId>maven-compiler-plugin</artifactId>
+-				<version>3.6.1</version>
++				<version>${maven-compiler-plugin.version}</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>${jdk.version}</source>
++					<target>${jdk.version}</target>
+ 				</configuration>
+ 			</plugin>
+ 

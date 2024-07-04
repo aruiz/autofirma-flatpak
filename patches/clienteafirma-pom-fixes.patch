@@ -1,0 +1,30 @@
+diff --git a/afirma-signature-retriever/pom.xml b/afirma-signature-retriever/pom.xml
+index 0f8fee56d..aa770e8a2 100644
+--- a/afirma-signature-retriever/pom.xml
++++ b/afirma-signature-retriever/pom.xml
+@@ -40,8 +40,8 @@
+ 				<groupId>org.apache.maven.plugins</groupId>
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>${jdk.version}</source>
++					<target>${jdk.version}</target>
+ 					<fork>true</fork>
+ <!-- 					
+ 					<compilerArgs>
+diff --git a/afirma-signature-storage/pom.xml b/afirma-signature-storage/pom.xml
+index 930d69a6b..f75961212 100644
+--- a/afirma-signature-storage/pom.xml
++++ b/afirma-signature-storage/pom.xml
+@@ -40,8 +40,8 @@
+ 				<groupId>org.apache.maven.plugins</groupId>
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>${jdk.version}</source>
++					<target>${jdk.version}</target>
+ 					<fork>true</fork>
+ <!-- 
+ 					<compilerArgs>

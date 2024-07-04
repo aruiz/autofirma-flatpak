@@ -1,0 +1,9 @@
+#!/bin/bash
+
+java -Djdk.tls.maxHandshakeMessageSize=65536           \
+     -Djdk.gtk.version=3 \
+     -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel \
+     -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel \
+     -Dawt.useSystemAAFontSettings=on \
+     -Dswing.aatext=true \
+     -jar /app/usr/lib/AutoFirma/AutoFirma.jar "$@"

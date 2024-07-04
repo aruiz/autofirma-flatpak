@@ -3,53 +3,85 @@ runtime: org.freedesktop.Platform
 sdk: org.freedesktop.Sdk
 runtime-version: "23.08"
 sdk-extensions:
-    - org.freedesktop.Sdk.Extension.openjdk11
+  - org.freedesktop.Sdk.Extension.openjdk17
 command: /app/usr/bin/autofirma
 finish-args:
-    - --env=PATH=/app/jre/bin:/app/bin:/usr/bin
-    - --env=JAVA_HOME=/app/jre
-    - --env=JAVA=/app/jre/bin/java
-    - --share=ipc
-    - --socket=x11
-    - --socket=pulseaudio
-    - --share=network
-    - --device=dri
-    - --filesystem=home
-    - --persist=.java
+  - --env=PATH=/app/jre/bin:/app/bin:/usr/bin
+  - --env=JAVA_HOME=/app/jre
+  - --env=JAVA=/app/jre/bin/java
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --share=network
+  - --device=dri
+  - --filesystem=home
+  - --persist=.java
 modules:
-    - name: openjdk
-      buildsystem: simple
-      build-commands:
-        - /usr/lib/sdk/openjdk11/install.sh
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk17/install.sh
 
-    - name: dnie
-      buildsystem: simple
-      build-commands:
-        - sh install-dnie.sh
-      sources:
-        - type: file
-          filename: libpkcs11-dnie_1.6.8_amd64.deb
-          url: https://www.dnielectronico.es/descargas/distribuciones_linux/libpkcs11-dnie_1.6.8_amd64.deb
-          sha256: 851d7438b2c0ca601e492e69b2bbd279c0ea291aa8881d932b8e0a56f6261b09
-          size: 1440
-        
-        - type: file
-          path: install-dnie.sh
-        
-    - name: autofirma
-      buildsystem: simple
-      build-commands:
-        - ./install-autofirma.sh
-      sources:
-        - type: archive
-          filename: AutoFirma_Linux_Debian.zip
-          url: https://estaticos.redsara.es/comunes/autofirma/currentversion/AutoFirma_Linux_Debian.zip
-          sha256: 5b0660a9e1fbcba6aa81c8142429084e72f9d2b306c6bc1c73b7c860e6c81ab9
-          size: 51564
+  - name: dnie
+    buildsystem: simple
+    build-commands:
+      - sh install-dnie.sh
+    sources:
+      - type: file
+        filename: libpkcs11-dnie_1.6.8_amd64.deb
+        url: https://www.dnielectronico.es/descargas/distribuciones_linux/libpkcs11-dnie_1.6.8_amd64.deb
+        sha256: 851d7438b2c0ca601e492e69b2bbd279c0ea291aa8881d932b8e0a56f6261b09
+        size: 1440
 
-        - type: file
-          path: install-autofirma.sh
-        - type: file
-          path: com.github.aruiz.Autofirma.desktop
-        - type: file
-          path: AutoFirma.svg
+      - type: file
+        path: install-dnie.sh
+
+  - name: autofirma
+    buildsystem: simple
+    build-options:
+      env:
+        PATH: ${PATH}:/app/bin:/usr/bin:/usr/lib/sdk/openjdk17/bin
+        MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+        JAVA_HOME: /usr/lib/sdk/openjdk17/jvm/openjdk-17
+    build-commands:
+      - mv clienteafirma-external-* clienteafirma-external
+      - mv clienteafirma-1* clienteafirma
+      - mvn clean install -Dmaven.test.skip=true -f clienteafirma-external/pom.xml
+      - mvn clean install -Denv=devel -Dmaven.test.skip=true -f clienteafirma/pom.xml
+      - mvn clean install -Denv=install -Dmaven.test.skip=true -f clienteafirma/pom.xml
+      - install -Dm755 -t /app/usr/bin autofirma
+      - install -Dm644 -t /app/usr/lib/AutoFirma/ clienteafirma/afirma-simple/target/AutoFirma.jar
+      - install -Dm644 -t /app/usr/lib/AutoFirma/ clienteafirma/afirma-ui-simple-configurator/target/AutoFirmaConfigurador.jar
+      - install -Dm644 -t /app/usr/lib/AutoFirma/ clienteafirma/afirma-simple-installer/linux/instalador_deb/src/usr/lib/AutoFirma/AutoFirma.png
+      - install -Dm644 -t /app/share/applications/ com.github.aruiz.Autofirma.desktop
+      - install -Dm644 -t /app/share/icons/hicolor/scalable/ com.github.aruiz.Autofirma.svg
+    sources:
+      - type: archive
+        dest-filename: clienteafirma-external.tar.gz
+        url: https://github.com/ctt-gob-es/clienteafirma-external/archive/c108f6331068260e9222ce987a7093311d82e463.tar.gz
+        sha256: 3f8e5c014fb3bf9729051472d6ce7374878cb0db59dc6e6fd3fb197d6ebb18b7
+        strip-components: 0
+      - type: archive
+        dest-filename: clienteafirma.tar.gz
+        url: https://github.com/ctt-gob-es/clienteafirma/archive/refs/tags/v1.8.3.tar.gz
+        sha256: 562d0f73237ee4268f5b12816ce69dd87d673b5d6fd6181b63f90a0a5738d6cf
+        strip-components: 0
+      - type: file
+        path: autofirma
+      - type: file
+        path: com.github.aruiz.Autofirma.desktop
+      - type: file
+        path: com.github.aruiz.Autofirma.svg
+      - type: patch
+        paths:
+          - patches/clienteafirma-external-pom-fixes.patch
+        options:
+          - -d
+          - clienteafirma-external-c108f6331068260e9222ce987a7093311d82e463
+      - type: patch
+        paths:
+          - patches/clienteafirma-pom-fixes.patch
+        options:
+          - -d
+          - clienteafirma-1.8.3
+      - maven-dependencies.yaml
